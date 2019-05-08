@@ -1,26 +1,42 @@
 ﻿using SDL2;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SDL2NETKeyboardSample
 {
+    /// <summary>
+    /// Represents the state of the keyboard.
+    /// </summary>
     public struct KeyboardState
     {
-        public List<SDL.SDL_Keycode> Keys { get; set; }
+        private List<SDL.SDL_Keycode> _keys;
 
 
+        /// <summary>
+        /// Creates a new instance of <see cref="KeyboardState"/>.
+        /// </summary>
+        /// <param name="keys"></param>
         public KeyboardState(List<SDL.SDL_Keycode> keys)
         {
-            Keys = new List<SDL.SDL_Keycode>();
+            _keys = new List<SDL.SDL_Keycode>();
 
             foreach (var key in keys)
-                Keys.Add(key);
+                _keys.Add(key);
         }
 
-        public bool IsKeyDown(SDL.SDL_Keycode key) => Keys.Contains(key);
+
+        /// <summary>
+        /// Returns a value indicating if the given <paramref name="key"/> is being pressed down.
+        /// </summary>
+        /// <param name="key">The key to check.</param>
+        /// <returns></returns>
+        public bool IsKeyDown(SDL.SDL_Keycode key) => _keys.Contains(key);
 
 
+        /// <summary>
+        /// Returns a value indicating if the given <paramref name="key"/> is not being pressed.
+        /// </summary>
+        /// <param name="key">The key to check.</param>
+        /// <returns></returns>
         public bool IsKeyUp(SDL.SDL_Keycode key) => !IsKeyDown(key);
     }
 }
