@@ -24,6 +24,9 @@ namespace SDL2NETKeyboardSample
         }
 
 
+        public SDL.SDL_Keycode[] PressedKeys => _keys.ToArray();
+
+
         /// <summary>
         /// Returns a value indicating if the given <paramref name="key"/> is being pressed down.
         /// </summary>

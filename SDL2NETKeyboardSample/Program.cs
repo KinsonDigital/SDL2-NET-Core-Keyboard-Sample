@@ -51,6 +51,14 @@ namespace SDL2NETKeyboardSample
                     //Get the current state of the keyboard
                     _currentKeyState = Keyboard.GetState();
 
+
+                    foreach (var key in _currentKeyState.PressedKeys)
+                    {
+                        var keyText = key.ToString();
+
+                        Console.WriteLine($"Key: {keyText} - {(int)key}");
+                    }
+
                     //If any of the arrow keys are being pressed down, push that message to the console
                     if (_currentKeyState.IsKeyDown(SDL.SDL_Keycode.SDLK_LEFT) && _prevKeyState.IsKeyUp(SDL.SDL_Keycode.SDLK_LEFT))
                     {
