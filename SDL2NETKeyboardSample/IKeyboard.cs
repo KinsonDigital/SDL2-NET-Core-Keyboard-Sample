@@ -40,17 +40,10 @@ namespace SDL2NETKeyboardSample
 
 
         /// <summary>
-        /// Returns true if any keys have been pressed.  This means a key was first put into the down position, then released to the up position.
-        /// </summary>
-        /// <returns></returns>
-        bool AreAnyKeysPressed();
-
-
-        /// <summary>
         /// Returns a value indicating if any of the numpad number keys were pressed.
         /// </summary>
         /// <returns></returns>
-        bool AnyNumpadNumbersKeysDown();
+        bool AnyNumpadNumberKeysDown();
 
 
         /// <summary>
@@ -58,7 +51,7 @@ namespace SDL2NETKeyboardSample
         /// </summary>
         /// <param name="keys">The list of key codes to check.</param>
         /// <returns></returns>
-        bool IsAnyKeyDown(int[] keys);
+        bool IsAnyKeyDown(KeyCodes[] keys);
 
 
         /// <summary>
@@ -66,7 +59,7 @@ namespace SDL2NETKeyboardSample
         /// </summary>
         /// <param name="key">The key to check for.</param>
         /// <returns></returns>
-        bool IsKeyDown(int key);
+        bool IsKeyDown(KeyCodes key);
 
 
         /// <summary>
@@ -74,7 +67,7 @@ namespace SDL2NETKeyboardSample
         /// </summary>
         /// <param name="key">The key to check for.</param>
         /// <returns></returns>
-        bool IsKeyUp(int key);
+        bool IsKeyUp(KeyCodes key);
 
 
         /// <summary>
@@ -82,28 +75,28 @@ namespace SDL2NETKeyboardSample
         /// </summary>
         /// <param name="key">The key to check for.</param>
         /// <returns></returns>
-        bool IsKeyPressed(int key);
+        bool IsKeyPressed(KeyCodes key);
 
 
         /// <summary>
         /// Returns all of the currently pressed keys on the keyboard.
         /// </summary>
         /// <returns></returns>
-        int[] GetCurrentPressedKeys();
+        KeyCodes[] GetCurrentPressedKeys();
 
 
         /// <summary>
         /// Returns all of the previously pressed keys from the last frame.
         /// </summary>
         /// <returns></returns>
-        int[] GetPreviousPressedKeys();
+        KeyCodes[] GetPreviousPressedKeys();
 
 
         /// <summary>
-        /// Returns a value indicating if a letter on the keyboard was pressed.
+        /// Returns a value indicating if a letter on the keyboard have been pressed.
         /// </summary>
         /// <returns></returns>
-        bool WasLetterPressed();
+        bool AnyLettersPressed();
         #endregion
     }
 }

@@ -16,12 +16,14 @@ namespace SDL2NETKeyboardSample
         private const int WINDOW_HEIGHT = 480;
         private static bool _quit = false;
         private static IntPtr _windowPtr = IntPtr.Zero;
-        private static KeyboardState _currentKeyState;
-        private static KeyboardState _prevKeyState;
+        private static Keyboard _keyboard;
 
 
         static void Main(string[] args)
         {
+            //Setup the keyboard
+            _keyboard = new Keyboard(new SDLKeyboard());
+
             //Initialize SDL.  A true value means initialization was successful.
             var isInitialized = Init();
 
@@ -46,42 +48,44 @@ namespace SDL2NETKeyboardSample
                 {
                     //Process any incoming events from the window such as window specific
                     //events or keyboard events.
-                    ProcessWindowEvents();
+                    //ProcessWindowEvents();
 
-                    //Get the current state of the keyboard
-                    _currentKeyState = Keyboard.GetState();
+                    //Update the current state of the keyboard
+                    _keyboard.UpdateCurrentState();
 
-
-                    foreach (var key in _currentKeyState.PressedKeys)
+                    foreach (var key in _keyboard.GetCurrentPressedKeys())
                     {
-                        var keyText = key.ToString();
-
-                        Console.WriteLine($"Key: {keyText} - {(int)key}");
+                        Console.WriteLine($"Key: {key.ToString()} - {(int)key}");
                     }
 
+                    //foreach (var key in _keyboard.PressedKeys)
+                    //{
+                    //    var keyText = key.ToString();
+
+                    //    Console.WriteLine($"Key: {keyText} - {(int)key}");
+                    //}
+
                     //If any of the arrow keys are being pressed down, push that message to the console
-                    if (_currentKeyState.IsKeyDown(SDL.SDL_Keycode.SDLK_LEFT) && _prevKeyState.IsKeyUp(SDL.SDL_Keycode.SDLK_LEFT))
+                    if (_keyboard.IsKeyDown(KeyCodes.Left) && _keyboard.IsKeyUp(KeyCodes.Left))
                     {
                         WriteMessage(SDL.SDL_Keycode.SDLK_LEFT);
                     }
-                    else if (_currentKeyState.IsKeyDown(SDL.SDL_Keycode.SDLK_RIGHT) && _prevKeyState.IsKeyUp(SDL.SDL_Keycode.SDLK_RIGHT))
+                    else if (_keyboard.IsKeyDown(KeyCodes.Right) && _keyboard.IsKeyUp(KeyCodes.Right))
                     {
                         WriteMessage(SDL.SDL_Keycode.SDLK_RIGHT);
                     }
-                    else if (_currentKeyState.IsKeyDown(SDL.SDL_Keycode.SDLK_UP) && _prevKeyState.IsKeyUp(SDL.SDL_Keycode.SDLK_UP))
+                    else if (_keyboard.IsKeyDown(KeyCodes.Up) && _keyboard.IsKeyUp(KeyCodes.Up))
                     {
                         WriteMessage(SDL.SDL_Keycode.SDLK_UP);
                     }
-                    else if (_currentKeyState.IsKeyDown(SDL.SDL_Keycode.SDLK_DOWN) && _prevKeyState.IsKeyUp(SDL.SDL_Keycode.SDLK_DOWN))
+                    else if (_keyboard.IsKeyDown(KeyCodes.Down) && _keyboard.IsKeyUp(KeyCodes.Down))
                     {
                         WriteMessage(SDL.SDL_Keycode.SDLK_DOWN);
                     }
 
-                    //Save the current state of the keyboard as the previous state for the 
-                    //next game loop iteration.  The difference of the current keyboard state and
-                    //the previous represents the state of the keyboard during this frame
-                    //and the previous frame
-                    _prevKeyState = _currentKeyState;
+
+                    //Update the previous state of the keyboard
+                    _keyboard.UpdatePreviousState();
                 }
             }
             else
@@ -127,21 +131,21 @@ namespace SDL2NETKeyboardSample
         /// </summary>
         private static void ProcessWindowEvents()
         {
-            while (SDL.SDL_PollEvent(out var e) != 0)
-            {
-                if (e.type == SDL.SDL_EventType.SDL_QUIT)
-                {
-                    _quit = true;
-                }
-                else if (e.type == SDL.SDL_EventType.SDL_KEYDOWN)
-                {
-                    Keyboard.AddKey(e.key.keysym.sym);
-                }
-                else if (e.type == SDL.SDL_EventType.SDL_KEYUP)
-                {
-                    Keyboard.RemoveKey(e.key.keysym.sym);
-                }
-            }
+            //while (SDL.SDL_PollEvent(out var e) != 0)
+            //{
+            //    if (e.type == SDL.SDL_EventType.SDL_QUIT)
+            //    {
+            //        _quit = true;
+            //    }
+            //    else if (e.type == SDL.SDL_EventType.SDL_KEYDOWN)
+            //    {
+            //        Keyboard.AddKey(e.key.keysym.sym);
+            //    }
+            //    else if (e.type == SDL.SDL_EventType.SDL_KEYUP)
+            //    {
+            //        Keyboard.RemoveKey(e.key.keysym.sym);
+            //    }
+            //}
         }
     }
 }
