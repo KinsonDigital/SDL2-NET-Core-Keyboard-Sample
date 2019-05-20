@@ -16,6 +16,18 @@ namespace SDL2NETKeyboardSample
         /// Gets a value indicating if the numlock key is on.
         /// </summary>
         bool NumLockOn { get; }
+
+        bool IsLeftShiftDown { get; }
+
+        bool IsRightShiftDown { get; }
+
+        bool IsLeftCtrlDown { get; }
+
+        bool IsRightCtrlDown { get; }
+
+        bool IsLeftAltDown { get; }
+
+        bool IsRightAltDown { get; }
         #endregion
 
 

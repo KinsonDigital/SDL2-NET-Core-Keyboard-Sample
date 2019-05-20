@@ -30,59 +30,31 @@ namespace SDL2NETKeyboardSample
             Console.WriteLine("Press one of the arrow keys!");
             Console.WriteLine();
 
-            //Local helper function for printing a message to the console.
-            void WriteMessage(SDL.SDL_Keycode key)
-            {
-                Console.Clear();
-                Console.WriteLine("Press one of the arrow keys!");
-                Console.WriteLine();
-                Console.WriteLine($"The '{key.ToString()}' was pressed!!");
-            }
-
-
             //If successfully initialized.
             if (isInitialized)
             {
                 //This can represent your game loop
                 while(!_quit)
                 {
-                    //Process any incoming events from the window such as window specific
-                    //events or keyboard events.
-                    //ProcessWindowEvents();
-
                     //Update the current state of the keyboard
                     _keyboard.UpdateCurrentState();
 
-                    foreach (var key in _keyboard.GetCurrentPressedKeys())
+                    var letterKey = KeyCodes.None;
+
+                    var pressedResult = _keyboard.AnyLettersPressed();
+
+                    if (pressedResult)
                     {
-                        Console.WriteLine($"Key: {key.ToString()} - {(int)key}");
+                        Console.WriteLine($"The Letter '{letterKey.ToString()}' Was Pressed Down Then Let Go");
                     }
 
-                    //foreach (var key in _keyboard.PressedKeys)
+
+                    //var pressedKeys = _keyboard.GetCurrentPressedKeys();
+
+                    //foreach (var key in pressedKeys)
                     //{
-                    //    var keyText = key.ToString();
-
-                    //    Console.WriteLine($"Key: {keyText} - {(int)key}");
+                    //    Console.WriteLine(key.ToString());
                     //}
-
-                    //If any of the arrow keys are being pressed down, push that message to the console
-                    if (_keyboard.IsKeyDown(KeyCodes.Left) && _keyboard.IsKeyUp(KeyCodes.Left))
-                    {
-                        WriteMessage(SDL.SDL_Keycode.SDLK_LEFT);
-                    }
-                    else if (_keyboard.IsKeyDown(KeyCodes.Right) && _keyboard.IsKeyUp(KeyCodes.Right))
-                    {
-                        WriteMessage(SDL.SDL_Keycode.SDLK_RIGHT);
-                    }
-                    else if (_keyboard.IsKeyDown(KeyCodes.Up) && _keyboard.IsKeyUp(KeyCodes.Up))
-                    {
-                        WriteMessage(SDL.SDL_Keycode.SDLK_UP);
-                    }
-                    else if (_keyboard.IsKeyDown(KeyCodes.Down) && _keyboard.IsKeyUp(KeyCodes.Down))
-                    {
-                        WriteMessage(SDL.SDL_Keycode.SDLK_DOWN);
-                    }
-
 
                     //Update the previous state of the keyboard
                     _keyboard.UpdatePreviousState();
@@ -123,29 +95,6 @@ namespace SDL2NETKeyboardSample
 
 
             return true;
-        }
-
-
-        /// <summary>
-        /// Processes window related events such as movement, resizing, minimize and keyboard.
-        /// </summary>
-        private static void ProcessWindowEvents()
-        {
-            //while (SDL.SDL_PollEvent(out var e) != 0)
-            //{
-            //    if (e.type == SDL.SDL_EventType.SDL_QUIT)
-            //    {
-            //        _quit = true;
-            //    }
-            //    else if (e.type == SDL.SDL_EventType.SDL_KEYDOWN)
-            //    {
-            //        Keyboard.AddKey(e.key.keysym.sym);
-            //    }
-            //    else if (e.type == SDL.SDL_EventType.SDL_KEYUP)
-            //    {
-            //        Keyboard.RemoveKey(e.key.keysym.sym);
-            //    }
-            //}
         }
     }
 }

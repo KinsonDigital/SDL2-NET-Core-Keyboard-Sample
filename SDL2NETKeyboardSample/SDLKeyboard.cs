@@ -48,10 +48,21 @@ namespace SDL2NETKeyboardSample
 
 
         #region Props
-        public bool CapsLockOn => _currentStateKeys.Any(k => k.Key == SDL.SDL_Keycode.SDLK_CAPSLOCK && k.Value);
+        public bool CapsLockOn => (SDL.SDL_GetModState() & SDL.SDL_Keymod.KMOD_CAPS) == SDL.SDL_Keymod.KMOD_CAPS;
 
+        public bool NumLockOn => (SDL.SDL_GetModState() & SDL.SDL_Keymod.KMOD_NUM) == SDL.SDL_Keymod.KMOD_NUM;
 
-        public bool NumLockOn => _currentStateKeys.Any(k => k.Key == SDL.SDL_Keycode.SDLK_NUMLOCKCLEAR && k.Value);
+        public bool IsLeftShiftDown => (SDL.SDL_GetModState() & SDL.SDL_Keymod.KMOD_LSHIFT) == SDL.SDL_Keymod.KMOD_LSHIFT;
+
+        public bool IsRightShiftDown => (SDL.SDL_GetModState() & SDL.SDL_Keymod.KMOD_RSHIFT) == SDL.SDL_Keymod.KMOD_RSHIFT;
+
+        public bool IsLeftCtrlDown => (SDL.SDL_GetModState() & SDL.SDL_Keymod.KMOD_LCTRL) == SDL.SDL_Keymod.KMOD_LCTRL;
+
+        public bool IsRightCtrlDown => (SDL.SDL_GetModState() & SDL.SDL_Keymod.KMOD_RCTRL) == SDL.SDL_Keymod.KMOD_RCTRL;
+
+        public bool IsLeftAltDown => (SDL.SDL_GetModState() & SDL.SDL_Keymod.KMOD_LALT) == SDL.SDL_Keymod.KMOD_LALT;
+
+        public bool IsRightAltDown => (SDL.SDL_GetModState() & SDL.SDL_Keymod.KMOD_RALT) == SDL.SDL_Keymod.KMOD_RALT;
         #endregion
 
 
@@ -65,7 +76,7 @@ namespace SDL2NETKeyboardSample
             return downKeys.Any(k => _numPadKeys.Any(n => n == k.Key));
         }
 
-
+        
         public bool AreAnyKeysDown() => _currentStateKeys.Any(k => k.Value);
 
 
@@ -97,10 +108,8 @@ namespace SDL2NETKeyboardSample
         public bool IsKeyDown(KeyCodes key) => _currentStateKeys[KeyboardKeyMapper.ToSDLKeyCode(key)];
 
 
-        public bool IsKeyPressed(KeyCodes key)
-        {
-            return _currentStateKeys[KeyboardKeyMapper.ToSDLKeyCode(key)] && !_prevStateKeys[KeyboardKeyMapper.ToSDLKeyCode(key)];
-        }
+        public bool IsKeyPressed(KeyCodes key) => _currentStateKeys[KeyboardKeyMapper.ToSDLKeyCode(key)] == false &&
+            _prevStateKeys[KeyboardKeyMapper.ToSDLKeyCode(key)] == true;
 
 
         public bool IsKeyUp(KeyCodes key) => !IsKeyDown(key);
@@ -128,19 +137,6 @@ namespace SDL2NETKeyboardSample
             {
                 _prevStateKeys[currentKey.Key] = currentKey.Value;
             }
-        }
-
-
-        public bool AnyLettersPressed()
-        {
-            foreach (var letter in _letters)
-            {
-                if (_currentStateKeys[letter] && !_prevStateKeys[letter])
-                    return true;
-            }
-
-
-            return false;
         }
         #endregion
     }

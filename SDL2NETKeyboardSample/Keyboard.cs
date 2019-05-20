@@ -10,7 +10,7 @@ namespace SDL2NETKeyboardSample
     public class Keyboard
     {
         #region Fields
-        private readonly KeyCodes[] _lettersKeys = new[]
+        private readonly KeyCodes[] _letterKeys = new[]
         {
             KeyCodes.A, KeyCodes.B, KeyCodes.C, KeyCodes.D, KeyCodes.E,
             KeyCodes.F, KeyCodes.G, KeyCodes.H, KeyCodes.I, KeyCodes.J,
@@ -20,7 +20,7 @@ namespace SDL2NETKeyboardSample
             KeyCodes.Z, KeyCodes.Space
         };
 
-        private static readonly KeyCodes[] _numbersKeys = new[]
+        private static readonly KeyCodes[] _numberKeys = new[]
         {
             KeyCodes.D0, KeyCodes.D1, KeyCodes.D2,
             KeyCodes.D3, KeyCodes.D4, KeyCodes.D5,
@@ -66,7 +66,7 @@ namespace SDL2NETKeyboardSample
 
 
         #region Constructors
-        public Keyboard(IKeyboard keyboard)
+        internal Keyboard(IKeyboard keyboard)
         {
             InternalKeyboard = keyboard;
         }
@@ -88,6 +88,36 @@ namespace SDL2NETKeyboardSample
         /// Gets a value indicating if the numlock key is on.
         /// </summary>
         public bool NumLockOn => InternalKeyboard.NumLockOn;
+
+        /// <summary>
+        /// Gets a value indicating if the left shift key is being pressed down.
+        /// </summary>
+        public bool IsLeftShiftDown => InternalKeyboard.IsLeftShiftDown;
+
+        /// <summary>
+        /// Gets a value indicating if the right shift key is being pressed down.
+        /// </summary>
+        public bool IsRightShiftDown => InternalKeyboard.IsRightShiftDown;
+
+        /// <summary>
+        /// Gets a value indicating if the left control key is being pressed down.
+        /// </summary>
+        bool IsLeftCtrlDown => InternalKeyboard.IsLeftCtrlDown;
+
+        /// <summary>
+        /// Gets a value indicating if the right control key is being pressed down.
+        /// </summary>
+        bool IsRightCtrlDown => InternalKeyboard.IsRightCtrlDown;
+
+        /// <summary>
+        /// Gets a value indicating if the left alt key is being pressed down.
+        /// </summary>
+        bool IsLeftAltDown => InternalKeyboard.IsLeftAltDown;
+
+        /// <summary>
+        /// Gets a value indicating if the right alt key is being pressed down.
+        /// </summary>
+        bool IsRightAltDown => InternalKeyboard.IsRightAltDown;
         #endregion
 
 
@@ -181,13 +211,13 @@ namespace SDL2NETKeyboardSample
         /// </summary>
         /// <param name="letterKey">The letter key that was pressed if found.</param>
         /// <returns></returns>
-        public bool IsLetterPressed(out KeyCodes letterKey)
+        public bool WasLetterPressed(out KeyCodes letterKey)
         {
-            for (int i = 0; i < _lettersKeys.Length; i++)
+            for (int i = 0; i < _letterKeys.Length; i++)
             {
-                if (InternalKeyboard.IsKeyPressed(_lettersKeys[i]))
+                if (InternalKeyboard.IsKeyPressed(_letterKeys[i]))
                 {
-                    letterKey = _lettersKeys[i];
+                    letterKey = _letterKeys[i];
                     return true;
                 }
             }
@@ -200,11 +230,28 @@ namespace SDL2NETKeyboardSample
 
 
         /// <summary>
+        /// Returns a value indicating if a letter on the keyboard was pressed.
+        /// </summary>
+        /// <returns></returns>
+        public bool AnyLettersPressed()
+        {
+            foreach (var key in _letterKeys)
+            {
+                if (IsKeyPressed(key))
+                    return true;
+            }
+
+
+            return false;
+        }
+
+
+        /// <summary>
         /// Returns a value indicating if any number key is pressed.
         /// </summary>
         /// <param name="symbolKey">The number key that was pressed if found.</param>
         /// <returns></returns>
-        public bool IsNumberPressed(out KeyCodes numberKey)
+        public bool WasNumberPressed(out KeyCodes numberKey)
         {
             if (IsAnyShiftKeyDown())
             {
@@ -212,11 +259,11 @@ namespace SDL2NETKeyboardSample
                 return false;
             }
 
-            for (int i = 0; i < _numbersKeys.Length; i++)
+            for (int i = 0; i < _numberKeys.Length; i++)
             {
-                if (InternalKeyboard.IsKeyPressed(_numbersKeys[i]))
+                if (InternalKeyboard.IsKeyPressed(_numberKeys[i]))
                 {
-                    numberKey = _numbersKeys[i];
+                    numberKey = _numberKeys[i];
 
                     return true;
                 }
@@ -234,15 +281,15 @@ namespace SDL2NETKeyboardSample
         /// </summary>
         /// <param name="symbolKey">The symbok key that was pressed if found.</param>
         /// <returns></returns>
-        public bool IsSymbolPressed(out KeyCodes symbolKey)
+        public bool WasSymbolPressed(out KeyCodes symbolKey)
         {
             if (IsAnyShiftKeyDown())
             {
-                for (int i = 0; i < _numbersKeys.Length; i++)
+                for (int i = 0; i < _numberKeys.Length; i++)
                 {
-                    if (InternalKeyboard.IsKeyPressed(_numbersKeys[i]))
+                    if (InternalKeyboard.IsKeyPressed(_numberKeys[i]))
                     {
-                        symbolKey = _numbersKeys[i];
+                        symbolKey = _numberKeys[i];
                         return true;
                     }
                 }
@@ -277,7 +324,7 @@ namespace SDL2NETKeyboardSample
         {
             if (IsAnyShiftKeyDown())
             {
-                if (_lettersKeys.Contains(key))
+                if (_letterKeys.Contains(key))
                 {
                     return key.ToString()[0];
                 }
@@ -285,7 +332,7 @@ namespace SDL2NETKeyboardSample
                 {
                     return _withShiftModifierSymbolTextItems[key][0];
                 }
-                else if (_numbersKeys.Contains(key))
+                else if (_numberKeys.Contains(key))
                 {
                     var keyString = key.ToString();
 
@@ -294,7 +341,7 @@ namespace SDL2NETKeyboardSample
             }
             else
             {
-                if (_lettersKeys.Contains(key))
+                if (_letterKeys.Contains(key))
                 {
                     return key.ToString().ToLower()[0];
                 }
@@ -302,7 +349,7 @@ namespace SDL2NETKeyboardSample
                 {
                     return _noShiftModifierSymbolTextItems[key][0];
                 }
-                else if (_numbersKeys.Contains(key))
+                else if (_numberKeys.Contains(key))
                 {
                     var keyString = key.ToString();
 
@@ -326,7 +373,17 @@ namespace SDL2NETKeyboardSample
 
 
         /// <summary>
-        /// Returns a value indicating if the any of the delete keys ahve been fully pressed.
+        /// Returns a value indicating if any of the control keys are being pressed down.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsAnyCtrlKeyDown()
+        {
+            return InternalKeyboard.IsLeftCtrlDown || InternalKeyboard.IsRightCtrlDown;
+        }
+
+
+        /// <summary>
+        /// Returns a value indicating if the any of the delete keys have been fully pressed.
         /// </summary>
         /// <returns></returns>
         public bool IsDeleteKeyPressed()
@@ -342,16 +399,6 @@ namespace SDL2NETKeyboardSample
         public bool IsBackspaceKeyPressed()
         {
             return IsKeyPressed(KeyCodes.Back);
-        }
-
-
-        /// <summary>
-        /// Returns a value indicating if a letter on the keyboard was pressed.
-        /// </summary>
-        /// <returns></returns>
-        public bool WasLetterPressed()
-        {
-            return InternalKeyboard.AnyLettersPressed();
         }
 
 
