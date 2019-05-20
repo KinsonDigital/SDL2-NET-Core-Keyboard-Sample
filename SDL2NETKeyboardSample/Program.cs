@@ -39,15 +39,15 @@ namespace SDL2NETKeyboardSample
                     //Update the current state of the keyboard
                     _keyboard.UpdateCurrentState();
 
-                    var letterKey = KeyCodes.None;
+                    KeyCodes pressedKey;
 
-                    var pressedResult = _keyboard.AnyLettersPressed();
-
-                    if (pressedResult)
+                    if (_keyboard.AnyNumbersPressed(out pressedKey))
                     {
-                        Console.WriteLine($"The Letter '{letterKey.ToString()}' Was Pressed Down Then Let Go");
+                        Console.WriteLine($"Number key '{pressedKey.ToString()}' pressed");
                     }
-
+                    else
+                    {
+                    }
 
                     //var pressedKeys = _keyboard.GetCurrentPressedKeys();
 

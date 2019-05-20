@@ -17,16 +17,34 @@ namespace SDL2NETKeyboardSample
         /// </summary>
         bool NumLockOn { get; }
 
+        /// <summary>
+        /// Gets a value indicating if the left shift key is being pressed.
+        /// </summary>
         bool IsLeftShiftDown { get; }
 
+        /// <summary>
+        /// Gets a value indicating if the right shift key is being pressed.
+        /// </summary>
         bool IsRightShiftDown { get; }
 
+        /// <summary>
+        /// Gets a value indicating if the left control key is being pressed down.
+        /// </summary>
         bool IsLeftCtrlDown { get; }
 
+        /// <summary>
+        /// Gets a value indicating if the right control key is being pressed down.
+        /// </summary>
         bool IsRightCtrlDown { get; }
 
+        /// <summary>
+        /// Gets a value indicating if the left alt key is being pressed down.
+        /// </summary>
         bool IsLeftAltDown { get; }
 
+        /// <summary>
+        /// Gets a value indicating if the right alt key is being pressed down.
+        /// </summary>
         bool IsRightAltDown { get; }
         #endregion
 
@@ -49,13 +67,6 @@ namespace SDL2NETKeyboardSample
         /// </summary>
         /// <returns></returns>
         bool AreAnyKeysDown();
-
-
-        /// <summary>
-        /// Returns a value indicating if any of the numpad number keys were pressed.
-        /// </summary>
-        /// <returns></returns>
-        bool AnyNumpadNumberKeysDown();
 
 
         /// <summary>
@@ -102,13 +113,6 @@ namespace SDL2NETKeyboardSample
         /// </summary>
         /// <returns></returns>
         KeyCodes[] GetPreviousPressedKeys();
-
-
-        /// <summary>
-        /// Returns a value indicating if a letter on the keyboard have been pressed.
-        /// </summary>
-        /// <returns></returns>
-        bool AnyLettersPressed();
         #endregion
     }
 }
